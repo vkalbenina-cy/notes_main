@@ -1,4 +1,4 @@
-#начни тут создавать приложение с умными заметками
+# приложение с умными заметками
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QTextEdit, QListWidget, QLineEdit, QInputDialog, QMessageBox
 import json
 app = QApplication([])
@@ -6,7 +6,7 @@ main_win = QWidget()
 
 main_win.resize(800, 600)
 main_win.setWindowTitle('Умные заметки')
-
+#создание виджетов
 field_text = QTextEdit()
 list_notes_title = QLabel('Список заметок')
 list_notes = QListWidget()
@@ -22,12 +22,12 @@ btn_search_tag = QPushButton('Искать заметки по тегу')
 
 field_tag.setPlaceholderText('Введите тег...')
 
-
+#создание лэйаутов
 main_line = QHBoxLayout()
 v_line = QVBoxLayout()
 h_line1 = QHBoxLayout()
 h_line2 = QHBoxLayout()
-
+#добавление виджетов
 main_line.addWidget(field_text)
 main_win.setLayout(main_line)
 
@@ -50,14 +50,14 @@ v_line.addLayout(h_line2)
 v_line.addWidget(btn_search_tag)
 
 main_line.addLayout(v_line)
-
+#открытие файла json на чтение
 with open('notes.json', 'r', encoding='utf-8') as file:
     notes = json.load(file)
 
 list_notes.addItems(notes)
 
 def show_note():
-    title = list_notes.selectedItems()[0].text()
+    title = list_notes.selectedItems()[0].text()#возвращает или задает коллекцию выбранных в текущий момент элементов в компонентах списков, таблиц или деревьев
     text = notes[title]['текст']
     field_text.setText(text)
     list_tags.clear()
@@ -78,7 +78,7 @@ def add_note():
             with open('notes.json', 'w', encoding='utf-8') as file:
                 json.dump(notes, file, ensure_ascii=False, indent=4)
 
-def del_note():
+def del_note():#удаление 
     if len(list_notes.selectedItems()) > 0:
         title = list_notes.selectedItems()[0].text()
         del notes[title]
@@ -128,7 +128,7 @@ def unpin_tag():
         with open('notes.json', 'w', encoding='utf-8') as file:
             json.dump(notes, file, ensure_ascii=False, indent=4)
     else:
-        show_error('Ошибка! Вы не обозначили тег.')
+        show_error('Ошибка! Вы не обозначили тег.')#более подробное описание
 def search_notes():
     tag = field_tag.text()
     tag = tag.strip()
@@ -154,10 +154,10 @@ def search_notes():
 
 
 def show_error(text):
-    message = QMessageBox()
+    message = QMessageBox()#небольшое окно в случае ошибки
     message.setText(text)
     message.exec_()
-
+#отзыв на нажатие на клавишу
 btn_create_note.clicked.connect(add_note)
 btn_delete_note.clicked.connect(del_note)
 btn_save_note.clicked.connect(save_note)
